@@ -1,0 +1,7 @@
+Hi, {{ user.username }}
+
+Thanks for joining Nuze!
+
+Please confirm your account by clicking the link below
+
+{{ url_for('auth.confirm', token=token, _external=True) }}

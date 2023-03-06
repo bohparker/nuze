@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form 
+        method="POST"
+        target="{{ url_for('articles.write_article') }}">
+        {{ form.csrf_token }}
+        {{ form.title.label }}{{ form.title() }}<br>
+        {{ form.body() }}<br>
+        {{ form.submit() }}
+    </form>
+
+{% endblock%}
+
+{% block scripts %}
+    
+    {{ ckeditor.load(custom_url=url_for('static', filename='ckeditor/ckeditor.js')) }}
+    {{ ckeditor.config(name='body') }}
+{% endblock %}

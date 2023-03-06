@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Nuze | {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css' )}}">
+    </head>
+    <body>
+        <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary" 
+            data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="
+                    {{url_for('auth.index') }}">Nuze</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                </div>
+                </div>
+            </div>
+        </nav>
+
+        <div>
+            {% for category, message in get_flashed_messages
+                (with_categories=true) %}
+                <div class="alert alert-{{category}} alert-dismissable" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if current_user.is_authenticated %}
+            <div class="login-links">
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            </div>
+        {% else %}
+            <div class="login-links">
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Register</a>
+            </div>
+        {% endif %}
+
+        <div class="container">
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+
+        <script 
+            src="{{ url_for('static', filename='js/jquery-3.6.3.min.js')}}">
+        </script>
+        <script 
+            src="{{ url_for('static', filename='js/bootstrap.min.js')}}">
+        </script>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

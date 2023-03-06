@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock%}
+
+{% block content %}
+    
+    {% if current_user.is_authenticated %}
+        <h2>Hello, {{ current_user.username }}</h2>
+    {% else %}
+        <h2>Welcome!</h2>
+    {% endif %}
+
+    {% if current_user.is_authenticated and not current_user.confirmed %}
+        <h5>Your account is still not confirmed. Click <a href="{{ 
+            url_for('auth.resend_confirmation') }}">here</a>
+            to resend the confirmation email.</h5>
+    {% endif %}
+    
+{% endblock %}
