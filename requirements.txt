@@ -8,7 +8,6 @@ Flask==2.2.3
 Flask-CKEditor==0.4.6
 Flask-Login==0.6.2
 Flask-Mail==0.9.1
-Flask-Migrate @ file:///media/nyx/3835-6265/Flask/source-code/flask-migrate
 Flask-SQLAlchemy==3.0.3
 Flask-WTF==1.1.1
 greenlet==2.0.2
