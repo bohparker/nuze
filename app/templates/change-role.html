@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h4>User: {{ user.username }}</h4>
+    <h5>Current Role: {{ user.role.name }}</h5>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.role.label }}
+            {{ form.role() }}
+        </div>
+        {{ form.submit() }}
+    </form>
+{% endblock %}

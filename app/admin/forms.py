@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, SelectField
 from wtforms.validators import InputRequired
 
 class UserForm(FlaskForm):
@@ -13,6 +13,16 @@ class UserForm(FlaskForm):
     )
     email = StringField(
         'Email',
+        [InputRequired()]
+    )
+    submit = SubmitField(
+        'Submit',
+        [InputRequired()]
+    )
+
+class ChangeRoleForm(FlaskForm):
+    role = SelectField(
+        'Role',
         [InputRequired()]
     )
     submit = SubmitField(

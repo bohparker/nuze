@@ -4,11 +4,13 @@
 
     {% for user in users %}
         {% if user.role.name != 'admin' %}
-            <h4>{{ user.username }} | 
-                <a href="{{ url_for('admin.delete_user', id=user.id) }}">
-                    Delete User
-                </a>
-            </h4>
+            <h4>{{ user.username }}</h4>
+            <a href="{{ url_for('admin.delete_user', id=user.id) }}">
+                Delete User
+            </a> |
+            <a href="{{ url_for('admin.change_role', id=user.id) }}">
+                Change Role
+            </a>
             <p>ID: {{ user.id }}</p>
             <p>Role: {{ user.role.name }}</p>
         {% endif %}
