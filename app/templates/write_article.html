@@ -3,8 +3,8 @@
 {% block content %}
 
     <form 
-        method="POST"
-        target="{{ url_for('articles.write_article') }}">
+        action="{{ url_for('articles.write_article') }}"
+        method="POST">
         {{ form.csrf_token }}
         {{ form.title.label }}{{ form.title() }}<br>
         {{ form.body() }}<br>
@@ -14,7 +14,6 @@
 {% endblock%}
 
 {% block scripts %}
-    
     {{ ckeditor.load(custom_url=url_for('static', filename='ckeditor/ckeditor.js')) }}
     {{ ckeditor.config(name='body') }}
 {% endblock %}

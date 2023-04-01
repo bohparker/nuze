@@ -1,10 +1,24 @@
-from flask import render_template, url_for, request, flash, redirect, g
+from flask import render_template, url_for, request, flash, redirect, g, abort
 from app import db, login_manager
 from . import auth
-from ..models import User
+from ..models import User, Article, Permission
 from ..email import send_email
 from .forms import RegistrationForm, LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
+from functools import wraps
+
+# Permission decorator
+def has_permission(permission):
+    def decorator(f):
+        @wraps(f)
+        def decorated_view(*args, **kwargs):
+            # find permission from Permissions table using parameter
+            perm = Permission.query.filter_by(name=permission).first()
+            if not perm in current_user.role.permissions.all():
+                abort(403)
+            return f(*args, **kwargs)
+        return decorated_view
+    return decorator
 
 @login_manager.user_loader
 def load_user(id):
@@ -16,7 +30,8 @@ def get_current_user():
 
 @auth.route('/')
 def index():
-    return render_template('index.html')
+    articles = Article.query.all()
+    return render_template('index.html', articles=articles)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():

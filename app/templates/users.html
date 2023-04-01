@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for user in users %}
+        {% if user.role.name != 'admin' %}
+            <h4>{{ user.username }} | 
+                <a href="{{ url_for('admin.delete_user', id=user.id) }}">
+                    Delete User
+                </a>
+            </h4>
+            <p>ID: {{ user.id }}</p>
+            <p>Role: {{ user.role.name }}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
