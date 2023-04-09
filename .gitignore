@@ -1,5 +1,9 @@
 /secret
 /env
+/.env
+/venv
+/.venv
+*.env
 /__pycache__
 /checklist.txt
 *.sqlite
