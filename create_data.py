@@ -30,9 +30,15 @@ with app.app_context():
     role4.permissions.extend([p1,p2,p3,p4,p5,p6,p7])
 
     # create the admin
-    u1 = User(username='admin', password='admin', email='bpker@pm.me', role_id=4, confirmed=True)
+    u1 = User(username='admin', password='admin', email='me@mail.com', role_id=4, confirmed=True)
 
     db.session.add_all([role1,role2,role3,role4])
     db.session.add_all([p1,p2,p3,p4,p5,p6,p7])
     db.session.add(u1)
     db.session.commit()
+
+    print('Data has been created')
+    print('----------------------')
+    print('Admin profile added: ')
+    print('username: admin')
+    print('password: admin')
