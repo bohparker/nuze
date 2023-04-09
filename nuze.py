@@ -1,4 +1,5 @@
 import os
+import util
 from app import create_app, db
 from app.models import User, Role, Permission, Article
 
@@ -19,21 +20,17 @@ def delete_db():
     db.drop_all()
 
 @app.cli.command()
-def print_users():
-    users = User.query.all()
-
-    for user in users:
-        user_string = f"""
-        username: {user.username}
-        role: {user.role}
-        permissions:
-        """
-        print(user_string)
-        for role in user.role.permissions:
-            print(role)
-        print('-----------')
+def get_users():
+    util.get_users()
 
 @app.cli.command()
-def get_environ():
-    for k,v in os.environ.items():
-        print(f'{k}:{v}')
+def get_env():
+    util.get_env()
+
+@app.cli.command()
+def get_urls():
+    util.get_urls(app)
+
+@app.cli.command()
+def make_key():
+    util.make_key()

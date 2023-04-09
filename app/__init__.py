@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
@@ -12,6 +13,9 @@ db = SQLAlchemy()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 ckeditor = CKEditor()
+
+# set environment variables from .env file
+load_dotenv()
 
 def create_app(config_name):
     app = Flask(__name__)
