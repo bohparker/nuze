@@ -62,7 +62,7 @@ def create_user():
         username = form.username.data
         password = form.password.data
         email = form.email.data
-
+    
         try:
             new_user = User(username, password, email, role_id=1, confirmed=False)
             db.session.add(new_user)

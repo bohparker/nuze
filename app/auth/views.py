@@ -1,3 +1,5 @@
+import os
+from urllib.parse import urlparse, urljoin
 from flask import render_template, url_for, request, flash, redirect, g, abort
 from app import db, login_manager
 from . import auth
@@ -6,6 +8,30 @@ from ..email import send_email
 from .forms import RegistrationForm, LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from functools import wraps
+
+
+
+# list of routes from url_map
+INTERNAL_URLS = os.environ.get('INTERNAL_URLS') or \
+['static', 'ckeditor.static', 'auth.index', 'auth.register', 'auth.login', 'auth.logout', 'auth.confirm', 'auth.resend_confirmation', 'articles.article', 'articles.write_article', 'admin.admin_page', 'admin.users', 'admin.delete_user', 'admin.change_role', 'admin.create_user']
+
+# define host url to use in is_safe_url
+SAFE_URLS = os.environ.get('SAFE_URLS') or INTERNAL_URLS
+
+def is_safe_url(target):
+    ref_urls = SAFE_URLS
+    matches = 0
+    for url in ref_urls:
+        test_url = urlparse(target)
+        safe_url = urlparse(url)
+
+        if (test_url.netloc != '' and test_url.netloc == safe_url.netloc) or \
+        (test_url.path != '' and test_url.path == safe_url.path):
+            matches += 1
+        else:
+            continue
+    return matches >= 1
+
 
 # Permission decorator
 def has_permission(permission):
@@ -23,6 +49,12 @@ def has_permission(permission):
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+# overwrite unauthorized handler to get next endpoint
+@login_manager.unauthorized_handler
+def redirect_to_login_with_next():
+    flash('You must be logged in to view this page.', 'info')
+    return redirect(url_for('auth.login', next=request.endpoint))
 
 @auth.before_request
 def get_current_user():
@@ -85,11 +117,16 @@ def login():
         username = form.username.data
         password = form.password.data
         existing_user = User.query.filter_by(username=username).first()
-
+        
         if existing_user and existing_user.check_password(password):
             login_user(existing_user)
-            flash(f'Welcome, {existing_user.username}! You have logged in.', 'info')
-            return redirect(url_for('.index'))
+            next = form.next.data
+
+            if next and is_safe_url(next):
+                return redirect(url_for(next))
+            else:
+                flash(f'Welcome, {existing_user.username}! You have logged in.', 'info')
+                return redirect(url_for('.index'))
         else:
             flash('Invalid username or password.', 'danger')
             render_template('login.html', form=form)
