@@ -16,7 +16,8 @@
             <br>
             ID: {{ user.id }}<br>
             Role: {{ user.role.name }}<br>
-            Confirmed: {{user.confirmed}}
+            Confirmed: {{user.confirmed}}<br>
+            Joined: {{ user.joined.strftime('%m/%d/%Y %H:%M') }}
             <hr>
         {% endif %}
     {% endfor %}

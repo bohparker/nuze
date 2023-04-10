@@ -1,0 +1,1 @@
+INTERNAL_ROUTES = ['static', 'ckeditor.static', 'auth.index', 'auth.register', 'auth.login', 'auth.logout', 'auth.confirm', 'auth.resend_confirmation', 'articles.article', 'articles.write_article', 'admin.admin_page', 'admin.users', 'admin.delete_user', 'admin.change_role', 'admin.create_user']

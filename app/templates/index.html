@@ -17,13 +17,13 @@
 
     {% for article in articles %}
 
-            <h3>
-                <a href=
-                    "{{ url_for('articles.article', id=article.id )}}"
-                >{{ article.title }}</a>
-            </h3>
-            <p>by {{ article.author.username }}</p>
-            <hr>
+        <h3>
+        <a href=
+            "{{ url_for('articles.article', id=article.id )}}"
+            >{{ article.title }}</a>
+        </h3>
+        <p>Written by {{ article.author.username }} on {{ article.timestamp.strftime('%m/%d/%Y /%H') }}</p>
+        <hr>
 
     {% endfor %}
 {% endblock %}

@@ -9,6 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True)
     pwdhash = db.Column(db.String())
     email = db.Column(db.String(100), unique=True)
+    joined = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     # one to many relationship to Role
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     confirmed = db.Column(db.Boolean)

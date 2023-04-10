@@ -1,5 +1,5 @@
 import os
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse
 from flask import render_template, url_for, request, flash, redirect, g, abort
 from app import db, login_manager
 from . import auth
@@ -8,15 +8,10 @@ from ..email import send_email
 from .forms import RegistrationForm, LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from functools import wraps
+from .internal_routes import INTERNAL_ROUTES
 
-
-
-# list of routes from url_map
-INTERNAL_URLS = os.environ.get('INTERNAL_URLS') or \
-['static', 'ckeditor.static', 'auth.index', 'auth.register', 'auth.login', 'auth.logout', 'auth.confirm', 'auth.resend_confirmation', 'articles.article', 'articles.write_article', 'admin.admin_page', 'admin.users', 'admin.delete_user', 'admin.change_role', 'admin.create_user']
-
-# define host url to use in is_safe_url
-SAFE_URLS = os.environ.get('SAFE_URLS') or INTERNAL_URLS
+# git list of safe urls to redirect to after logging in
+SAFE_URLS = os.environ.get('SAFE_URLS') or INTERNAL_ROUTES
 
 def is_safe_url(target):
     ref_urls = SAFE_URLS
