@@ -6,6 +6,7 @@ from flask_wtf import CSRFProtect
 from config import config
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
+from flask_moment import Moment
 
 
 mail = Mail()
@@ -13,6 +14,7 @@ db = SQLAlchemy()
 csrf = CSRFProtect()
 login_manager = LoginManager()
 ckeditor = CKEditor()
+moment = Moment()
 
 # set environment variables from .env file
 load_dotenv()
@@ -29,6 +31,7 @@ def create_app(config_name):
     login_manager.login_view = 'auth.login'
     login_manager.login_message_category = 'info'
     ckeditor.init_app(app)
+    moment.init_app(app)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)

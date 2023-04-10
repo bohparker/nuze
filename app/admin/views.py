@@ -47,8 +47,11 @@ def change_role(id):
         # the first user (admin) cannot have their role changed
         # users cannot change their own role
         if user.id != 1 and user.id != current_user.id:
-            user.role_id = role_id
-            db.session.commit()
+            if user.confirmed == True:
+                user.role_id = role_id
+                db.session.commit()
+            else:
+                flash('That user has not been confirmed.', 'warning')
         return redirect(url_for('.users'))
 
     return render_template('change-role.html', form=form, user=user)

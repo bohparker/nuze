@@ -28,3 +28,9 @@ def write_article():
         return redirect(url_for('auth.index'))
 
     return render_template('write_article.html', form=form)
+
+@articles.route('/user/<username>')
+def get_profile(username):
+    user = User.query.filter_by(username=username).first()
+    articles = Article.query.filter_by(author_id=user.id).all()
+    return render_template('profile.html', user=user, articles=articles)

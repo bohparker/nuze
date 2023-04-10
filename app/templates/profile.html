@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+    <div clas="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                {% if current_user.is_authenticated and not current_user.confirmed
+                    and current_user == user %}
+                <span style="color: crimson;">
+                    Your account is not confirmed!
+                </span>
+                <p>Click <a href="{{ 
+                    url_for('auth.resend_confirmation') }}">here</a>
+                    to resend the confirmation email.</p>
+                {% endif %}
+            </div>
+            <div class="col-sm-9" style="border: 1px solid black;border-radius: 8px;">
+                <h2>Articles by {{user.username}}</h2>
+                {% for article in articles %}
+                <h3>
+                    <a href=
+                        "{{ url_for('articles.article', id=article.id )}}"
+                        >{{ article.title }}</a>
+                </h3>
+                    <p>Written by {{ article.author.username }} 
+                        on {{ moment(article.timestamp).format('MM/DD/YYYY - h:mm A') }}</p>
+                    <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

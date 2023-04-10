@@ -15,9 +15,13 @@
             </a>
             <br>
             ID: {{ user.id }}<br>
+            Email: {{user.email}}<br>
             Role: {{ user.role.name }}<br>
             Confirmed: {{user.confirmed}}<br>
-            Joined: {{ user.joined.strftime('%m/%d/%Y %H:%M') }}
+            Joined: {{ moment(user.joined).format('MM/DD/YYYY - h:mm a') }}
+            <a href="{{url_for('articles.get_profile', username=user.username)}}">
+                View Profile
+            </a>
             <hr>
         {% endif %}
     {% endfor %}

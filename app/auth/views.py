@@ -92,7 +92,7 @@ def register():
                    'email/confirm', user=new_user, token=token)
 
         flash('You are registered! You have been sent a confirmation email.', 'success')
-        return redirect(url_for('.index'))
+        return redirect(url_for('articles.get_profile', username=new_user.username))
     
     if form.errors:
         for error, message in form.errors.items():

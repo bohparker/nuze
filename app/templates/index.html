@@ -3,27 +3,15 @@
 
 {% block content %}
     
-    {% if current_user.is_authenticated %}
-        <h2>Hello, {{ current_user.username }}</h2>
-    {% else %}
-        <h2>Welcome!</h2>
-    {% endif %}
-
-    {% if current_user.is_authenticated and not current_user.confirmed %}
-        <h5>Your account is still not confirmed. Click <a href="{{ 
-            url_for('auth.resend_confirmation') }}">here</a>
-            to resend the confirmation email.</h5>
-    {% endif %}
-
     {% for article in articles %}
-
         <h3>
         <a href=
             "{{ url_for('articles.article', id=article.id )}}"
             >{{ article.title }}</a>
         </h3>
-        <p>Written by {{ article.author.username }} on {{ article.timestamp.strftime('%m/%d/%Y /%H') }}</p>
+        <p>Written by <a href="{{ url_for('articles.get_profile', username=article.author.username)}}">
+            {{ article.author.username }}</a>
+            on {{ moment(article.timestamp).format('MM/DD/YYYY - h:mm A') }}</p>
         <hr>
-
     {% endfor %}
 {% endblock %}
