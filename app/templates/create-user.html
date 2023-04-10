@@ -10,15 +10,15 @@
         {{ form.csrf_token }}
         <div class="form-group">
             {{ form.username.label }}
-            {{ form.username(class="form-control-sm")}}
+            {{ form.username(class="form-control")}}
         </div>
         <div class="form-group">
             {{ form.password.label }}
-            {{ form.password(class="form-control-sm")}}
+            {{ form.password(class="form-control")}}
         </div>
         <div class="form-group">
             {{ form.email.label }}
-            {{ form.email(class="form-control-sm")}}
+            {{ form.email(class="form-control")}}
         </div>
         {{ form.submit() }}
     </form>

@@ -146,11 +146,15 @@ def logout():
     return redirect(url_for('.index'))
 
 @auth.route('/confirm/<token>')
-@login_required
 def confirm(token):
-    if current_user.confirmed:
+    username = request.args.get('username')
+    print(username)
+    print(type(username))
+    user = User.query.filter_by(username=username).first()
+    print(user)
+    if user.confirmed:
         return redirect(url_for('.index'))
-    if current_user.confirm(token):
+    elif user.confirm(token):
         flash('You have successfully confirmed your account!', 'success')
     else:
         flash('The confirmation link is invalid or has expired.', 'warning')

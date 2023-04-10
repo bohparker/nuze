@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}Users{% endblock %}
 {% block content %}
 
+    <h1>Users</h1>
     {% for user in users %}
         {% if user.role.name != 'admin' %}
             <h4>{{ user.username }}</h4>
@@ -11,8 +13,11 @@
             <a href="{{ url_for('admin.change_role', id=user.id) }}">
                 Change Role
             </a>
-            <p>ID: {{ user.id }}</p>
-            <p>Role: {{ user.role.name }}</p>
+            <br>
+            ID: {{ user.id }}<br>
+            Role: {{ user.role.name }}<br>
+            Confirmed: {{user.confirmed}}
+            <hr>
         {% endif %}
     {% endfor %}
 {% endblock %}

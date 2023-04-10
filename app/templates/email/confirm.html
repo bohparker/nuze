@@ -1,6 +1,6 @@
 <p>Hi, {{ user.username }}</p>
 <p>Thanks for joining Nuze!</p>
 <p>Please confirm your account by clicking the link below</p>
-<a href="{{ url_for('auth.confirm', token=token, _external=True) }}">
+<a href="{{ url_for('auth.confirm', username=user.username, token=token, _external=True) }}">
     Click here to confirm
 </a>
