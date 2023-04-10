@@ -12,6 +12,9 @@
             </a> |
             <a href="{{ url_for('admin.change_role', id=user.id) }}">
                 Change Role
+            </a> |
+            <a href="{{url_for('admin.confirm_user', id=user.id)}}">
+                Confirm User
             </a>
             <br>
             ID: {{ user.id }}<br>

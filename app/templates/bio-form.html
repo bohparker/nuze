@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Bio Form{% endblock %}
+
+{% block content %}
+    <form method="POST"
+        action="{{url_for('articles.bio_form')}}">
+        {{ form.csrf_token }}
+            {{ form.bio.label }}<br>
+            {{ form.bio(rows="4", cols="50", maxlength="400") }}<br>
+        {{ form.submit() }}
+    </form>
+    
+{% endblock %}

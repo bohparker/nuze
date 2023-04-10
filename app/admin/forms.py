@@ -15,6 +15,9 @@ class UserForm(FlaskForm):
         'Email',
         [InputRequired()]
     )
+    confirmed = SelectField(
+        'Confirmed'
+    )
     submit = SubmitField(
         'Submit',
         [InputRequired()]

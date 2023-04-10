@@ -61,13 +61,15 @@ def change_role(id):
 @has_permission('create_user')
 def create_user():
     form = UserForm()
+    form.confirmed.choices = [(True, 'Yes'),(False, 'No')]
     if request.method == 'POST' and form.validate_on_submit:
         username = form.username.data
         password = form.password.data
         email = form.email.data
+        confirmed = bool(form.confirmed.data)
     
         try:
-            new_user = User(username, password, email, role_id=1, confirmed=False)
+            new_user = User(username, password, email, role_id=1, confirmed=confirmed)
             db.session.add(new_user)
             db.session.commit()
         except IntegrityError:
@@ -78,3 +80,11 @@ def create_user():
             return redirect(url_for('.create_user'))
     
     return render_template('create-user.html', form=form)
+
+@admin.route('/confirm-user/')
+def confirm_user():
+    id = request.args.get('id')
+    user = User.query.get_or_404(id)
+    user.confirmed = True
+    db.session.commit()
+    return redirect(url_for('.users'))

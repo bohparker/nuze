@@ -4,7 +4,7 @@
 
     <div clas="container-fluid">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 {% if current_user.is_authenticated and not current_user.confirmed
                     and current_user == user %}
                 <span style="color: crimson;">
@@ -14,8 +14,22 @@
                     url_for('auth.resend_confirmation') }}">here</a>
                     to resend the confirmation email.</p>
                 {% endif %}
+
+                {% if current_user.is_authenticated and current_user == user %}
+                    <a href="{{url_for('articles.change_password', id=current_user.id)}}">
+                        Change Password
+                    </a>
+                {% endif %}
             </div>
-            <div class="col-sm-9" style="border: 1px solid black;border-radius: 8px;">
+            <div class="col-sm-10" style="border: 1px solid black;border-radius: 8px;">
+                <h1>{{ user.username}}</h1>
+                <h2>Bio</h2>
+                <p>{{ user.bio }}</p>
+                {% if user == current_user %}
+                    <a href="{{url_for('articles.bio_form')}}">
+                        Add or Edit Bio
+                    </a>
+                {% endif %}
                 <h2>Articles by {{user.username}}</h2>
                 {% for article in articles %}
                 <h3>

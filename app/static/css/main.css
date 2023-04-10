@@ -18,3 +18,7 @@
 label {
     width: 130px;
 }
+
+textarea {
+    resize: none;
+}
