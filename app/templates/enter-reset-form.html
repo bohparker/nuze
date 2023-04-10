@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Password Reset Form{% endblock %}
+
+{% block content %}
+    <form novalidate 
+        method="POST"
+        action="{{url_for('articles.reset', token=token, id=id)}}">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm.label }}
+            {{ form.confirm(class="form-control") }}
+        </div>
+        {{ form.submit() }}
+    </form>
+{% endblock %}

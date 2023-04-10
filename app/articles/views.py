@@ -3,10 +3,12 @@ flash, abort
 from app import db
 from . import articles
 from ..models import User, Article
-from .forms import ArticleForm, BioForm, ChangePasswordForm
+from .forms import ArticleForm, BioForm, ChangePasswordForm, \
+ResetPasswordForm, EnterPasswordResetForm
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from ..auth.views import has_permission
+from ..email import send_email
 
 @articles.route('/<int:id>')
 def article(id):
@@ -79,4 +81,46 @@ def change_password():
             return render_template('change-password.html', form=form, id=current_user.id)
 
     return render_template('change-password.html', form=form, id=id)
-            
+
+@articles.route('/reset-password', methods=['GET','POST'])
+def reset_password():
+    form = ResetPasswordForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = user.generate_confirm_token()
+            send_email(user.email, 'Reset Password',
+                       'email/reset', user=user, token=token)
+            flash('A password reset email has been sent.', 'info')
+            return redirect(url_for('auth.login'))
+        flash('No user with that email address was found.', 'warning')
+        return redirect(url_for('.reset_password'))
+    
+    return render_template('reset-password.html', form=form)
+
+@articles.route('/reset/<token>', methods=['GET', 'POST'])
+def reset(token):
+    form = EnterPasswordResetForm()
+    id = request.args.get('id')
+    if request.method == 'POST' and form.validate_on_submit():
+        user = User.query.get_or_404(id)
+        new_password = form.password.data
+        if user.verify_reset(token):
+            user.pwdhash = generate_password_hash(new_password)
+            db.session.commit()
+            flash('Password reset. Please log in.', 'success')
+            return redirect(url_for('auth.login'))
+        
+    if form.errors:
+        for error, message in form.errors.items():
+            flash(message[0], 'danger')
+            return render_template('enter-reset-form.html', form=form, token=token, id=id)
+
+    id = request.args.get('id')
+    user = User.query.get_or_404(id)
+    if user.verify_reset(token):
+        return render_template('enter-reset-form.html', form=form, token=token, id=user.id)
+    else:
+        flash('The reset link is invalid or expired.', 'warning')
+        return redirect(url_for('auth.login'))

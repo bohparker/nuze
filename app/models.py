@@ -33,7 +33,7 @@ class User(db.Model):
     def confirm(self, token):
         s = TimestampSigner(current_app.config['TIMESTAMP_KEY'])
         try:
-            data = s.unsign(token, max_age=60 * 5).decode('utf-8')
+            data = s.unsign(token, max_age=60 * 30).decode('utf-8')
         except:
             return False
         if data != self.username:
@@ -41,6 +41,16 @@ class User(db.Model):
         self.confirmed = True
         db.session.add(self)
         db.session.commit()
+        return True
+    
+    def verify_reset(self, token):
+        s = TimestampSigner(current_app.config['TIMESTAMP_KEY'])
+        try:
+            data = s.unsign(token, max_age=60 * 5).decode('utf-8')
+        except:
+            return False
+        if data != self.username:
+            return False
         return True
 
     

@@ -143,10 +143,7 @@ def logout():
 @auth.route('/confirm/<token>')
 def confirm(token):
     username = request.args.get('username')
-    print(username)
-    print(type(username))
     user = User.query.filter_by(username=username).first()
-    print(user)
     if user.confirmed:
         return redirect(url_for('.index'))
     elif user.confirm(token):
